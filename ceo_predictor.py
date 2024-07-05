@@ -3,7 +3,7 @@ import pandas as pd
 import plotly.graph_objects as go
 
 # Load the data
-file_path = r'C:\Users\Adham\Desktop\Ceos\New folder (2)\CEOs - data .xlsx'  # Ensure the file path is correct
+file_path = 'CEOs - data .xlsx'  # Ensure the file path is correct
 data = pd.read_excel(file_path)
 
 # Function to calculate the percentage chance of becoming a CEO
