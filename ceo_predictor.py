@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-import plotly.graph_objects as go
+import matplotlib.pyplot as plt
 
 # Load the data
 file_path = 'CEOs - data .xlsx'  # Ensure the file path is correct
@@ -34,11 +34,13 @@ user_data['السنوات قبل التعيين في نفس الجهة'] = st.sl
 # Calculate chance
 chance = calculate_ceo_chance(user_data, data)
 
-# Show the results in a donut chart
-fig = go.Figure(data=[go.Pie(labels=['Chance to be CEO', 'Others'], values=[chance, 100 - chance], hole=.4)])
-fig.update_traces(marker=dict(colors=['#2E91E5', '#E5ECF6']))
-fig.update_layout(title_text='Chance to be a CEO in the Future')
-st.plotly_chart(fig)
+# Show the results in a donut chart using matplotlib
+fig, ax = plt.subplots()
+sizes = [chance, 100 - chance]
+colors = ['#2E91E5', '#E5ECF6']
+ax.pie(sizes, labels=['Chance to be CEO', 'Others'], colors=colors, startangle=90, counterclock=False, wedgeprops=dict(width=0.3))
+ax.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
+st.pyplot(fig)
 
 # Provide insights in cards
 total_ceos = len(data)
