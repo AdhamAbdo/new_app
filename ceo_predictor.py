@@ -62,7 +62,7 @@ def find_best_scenario(dataset):
     return best_scenario
 
 # Streamlit app title
-st.title(translate("CEO Predictor"))
+st.markdown(f'<h1>{translate("Measuring your probability of reaching the position of CEO in the Kingdom of Saudi Arabia in")} <span style="color:#FF6347;">2024</span></h1>', unsafe_allow_html=True)
 
 # Option menu for navigation
 selected = option_menu(
@@ -82,13 +82,11 @@ if selected == translate("Predictor"):
     user_data['الجامعة'] = st.selectbox(translate('University'), options=data['الجامعة'].unique())
     user_data['دولة التخرج'] = st.selectbox(translate('Graduation Country'), options=data['دولة التخرج'].unique())
     user_data['آخر مؤهل'] = st.selectbox(translate('Highest Qualification'), options=data['آخر مؤهل'].unique())
-    user_data['السنوات قبل التعيين'] = st.slider(translate('Years Before Appointment'), min_value=1, max_value=30, value=int(data['السنوات قبل التعيين'].mean()))
-    user_data['السنوات قبل التعيين في نفس الجهة'] = st.slider(translate('Years Before Appointment in the Same Entity'), min_value=1, max_value=30, value=int(data['السنوات قبل التعيين في نفس الجهة'].mean()))
-    user_data['النوع'] = st.selectbox(translate('Gender'), options=data['النوع'].unique())
+    user_data['السنوات قبل التعيين'] = st.slider(translate('Experience'), min_value=1, max_value=30, value=int(data['السنوات قبل التعيين'].mean()))
+    user_data['النوع'] = st.selectbox(translate('Organization Type'), options=data['النوع'].unique())
     user_data['القطاع'] = st.selectbox(translate('Sector'), options=list(data['القطاع'].unique()) + [translate('Others')])
     user_data['اول تعيين له كرئيس تنفيذي؟'] = st.selectbox(translate('First Appointment as CEO?'), options=data['اول تعيين له كرئيس تنفيذي؟'].unique())
     user_data['اول جهة يعمل بها'] = st.selectbox(translate('First Organization'), options=list(data['اول جهة يعمل بها'].unique()) + [translate('Others')])
-    user_data['أطول مدة جهة يعمل بها'] = st.selectbox(translate('Longest Duration in an Organization'), options=data['أطول مدة جهة يعمل بها'].unique())
 
     # Calculate chance
     chance = calculate_ceo_chance(user_data, data)
@@ -103,12 +101,10 @@ if selected == translate("Predictor"):
     country_match = len(data[data['دولة التخرج'] == user_data['دولة التخرج']])
     qualification_match = len(data[data['آخر مؤهل'] == user_data['آخر مؤهل']])
     years_before_appointment_match = len(data[data['السنوات قبل التعيين'] == user_data['السنوات قبل التعيين']])
-    years_before_appointment_same_entity_match = len(data[data['السنوات قبل التعيين في نفس الجهة'] == user_data['السنوات قبل التعيين في نفس الجهة']])
     gender_match = len(data[data['النوع'] == user_data['النوع']])
     sector_match = len(data[data['القطاع'] == user_data['القطاع']])
     first_ceo_appointment_match = len(data[data['اول تعيين له كرئيس تنفيذي؟'] == user_data['اول تعيين له كرئيس تنفيذي؟']])
     first_organization_match = len(data[data['اول جهة يعمل بها'] == user_data['اول جهة يعمل بها']])
-    longest_duration_organization_match = len(data[data['أطول مدة جهة يعمل بها'] == user_data['أطول مدة جهة يعمل بها']])
 
     
     st.write(f"### {translate('Insights')}")
@@ -148,15 +144,11 @@ if selected == translate("Predictor"):
             <p>{qualification_match / total_ceos * 100:.2f}%</p>
         </div>
         <div class="insight-card">
-            <h3>{translate('Years Before Appointment')}</h3>
+            <h3>{translate('Experience')}</h3>
             <p>{years_before_appointment_match / total_ceos * 100:.2f}%</p>
         </div>
         <div class="insight-card">
-            <h3>{translate('Years Before Appointment in the Same Entity')}</h3>
-            <p>{years_before_appointment_same_entity_match / total_ceos * 100:.2f}%</p>
-        </div>
-        <div class="insight-card">
-            <h3>{translate('Gender')}</h3>
+            <h3>{translate('Organization Type')}</h3>
             <p>{gender_match / total_ceos * 100:.2f}%</p>
         </div>
         <div class="insight-card">
@@ -170,10 +162,6 @@ if selected == translate("Predictor"):
         <div class="insight-card">
             <h3>{translate('First Organization')}</h3>
             <p>{first_organization_match / total_ceos * 100:.2f}%</p>
-        </div>
-        <div class="insight-card">
-            <h3>{translate('Longest Duration in an Organization')}</h3>
-            <p>{longest_duration_organization_match / total_ceos * 100:.2f}%</p>
         </div>
     </div>
     """, unsafe_allow_html=True)
@@ -221,15 +209,11 @@ elif  selected == "Best Scenario" or selected == "أفضل سيناريو":
         <p>{best_scenario['آخر مؤهل']}</p>
     </div>
     <div class="best-scenario-card">
-        <h3>{translate('Years Before Appointment')}</h3>
+        <h3>{translate('Experience')}</h3>
         <p>{best_scenario['السنوات قبل التعيين']}</p>
     </div>
     <div class="best-scenario-card">
-        <h3>{translate('Years Before Appointment in the Same Entity')}</h3>
-        <p>{best_scenario['السنوات قبل التعيين في نفس الجهة']}</p>
-    </div>
-    <div class="best-scenario-card">
-        <h3>{translate('Gender')}</h3>
+        <h3>{translate('Organization Type')}</h3>
         <p>{best_scenario['النوع']}</p>
     </div>
     <div class="best-scenario-card">
@@ -244,10 +228,7 @@ elif  selected == "Best Scenario" or selected == "أفضل سيناريو":
         <h3>{translate('First Organization')}</h3>
         <p>{best_scenario['اول جهة يعمل بها']}</p>
     </div>
-    <div class="best-scenario-card">
-        <h3>{translate('Longest Duration in an Organization')}</h3>
-        <p>{best_scenario['أطول مدة جهة يعمل بها']}</p>
-    </div>
+
     """, unsafe_allow_html=True)
 
 elif selected == "Overview" or selected == "نظرة عامة":
@@ -280,17 +261,11 @@ elif selected == "Overview" or selected == "نظرة عامة":
     fig4.update_traces(texttemplate='%{y:.2f}%', textposition='outside')
     st.plotly_chart(fig4)
     
-    st.write("#### " + translate('Years Before Appointment'))
+    st.write("#### " + translate('Experience'))
     fig5 = px.histogram(data, x='السنوات قبل التعيين', color_discrete_sequence=[color], histnorm='percent')
     fig5.update_yaxes(title=translate('Percentage'))
     fig5.update_traces(texttemplate='%{y:.2f}%', textposition='outside')
     st.plotly_chart(fig5)
-    
-    st.write("#### " + translate('Years Before Appointment in the Same Entity'))
-    fig6 = px.histogram(data, x='السنوات قبل التعيين في نفس الجهة', color_discrete_sequence=[color], histnorm='percent')
-    fig6.update_yaxes(title=translate('Percentage'))
-    fig6.update_traces(texttemplate='%{y:.2f}%', textposition='outside')
-    st.plotly_chart(fig6)
     
     st.write("#### " + translate('First Appointment as CEO?'))
     fig7 = px.pie(data, names='اول تعيين له كرئيس تنفيذي؟', hole=.4, color_discrete_sequence=[color, '#E5ECF6'])
@@ -302,7 +277,7 @@ elif selected == "Overview" or selected == "نظرة عامة":
     fig_sector.update_traces(texttemplate='%{y:.2f}%', textposition='outside')
     st.plotly_chart(fig_sector)
 
-    st.write("#### " + translate('Distribution of Gender'))
+    st.write("#### " + translate('Organization Type'))
     fig8 = px.pie(data, names='النوع', hole=.4, color_discrete_sequence=[color, '#E5ECF6'])
     st.plotly_chart(fig8)
 
@@ -312,11 +287,6 @@ elif selected == "Overview" or selected == "نظرة عامة":
     fig_first_org.update_traces(texttemplate='%{y:.2f}%', textposition='outside')
     st.plotly_chart(fig_first_org)
 
-    st.write("#### " + translate('Distribution of Longest Duration in an Organization'))
-    fig_longest_org = px.histogram(data, x='أطول مدة جهة يعمل بها', color_discrete_sequence=[color], histnorm='percent')
-    fig_longest_org.update_yaxes(title=translate('Percentage'))
-    fig_longest_org.update_traces(texttemplate='%{y:.2f}%', textposition='outside')
-    st.plotly_chart(fig_longest_org)
 
 elif selected == "Contact" or selected == "اتصل بنا":
     st.write("### " + translate('Contact Information'))
